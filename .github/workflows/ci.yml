@@ -9,26 +9,34 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-    
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    
-    - name: Run tests with coverage
+        pip install pytest pytest-cov  # Asegúrate de instalar pytest y pytest-cov
+
+    - name: Check PATH and pytest location
       run: |
-        pytest --cov=. --cov-report=xml
-    
-    - name: Upload coverage report
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-        fail_ci_if_error: true
+        echo "Python Location: ${{ env.pythonLocation }}"
+        echo "Current PATH: $PATH"
+        which pytest
+        find ${{ env.pythonLocation }} -name "pytest" -executable
+
+    - name: Run tests with coverage (Explicitly add bin to PATH)
+      run: |
+        pythonLocation=$(echo "${{ env.pythonLocation }}")
+        echo "Adding to PATH: $pythonLocation/bin"
+        export PATH="$PATH:$pythonLocation/bin"
+        echo "Updated PATH: $PATH"
+        which pytest
+        pytest --cov=. --cov-report=xml --cov-report=term
+      shell: bash
