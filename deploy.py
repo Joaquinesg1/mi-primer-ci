@@ -1,17 +1,6 @@
 import os
 import sys
-import time
-import random
-
-def blue_green_deploy(environment):
-    """
-    Simula un despliegue Blue-Green en el entorno especificado
-    """
-    print(f"Iniciando despliegue Blue-Green en {environment}")
-    
-    # Paso 1: Preparar nuevo entorno (Green)
-    print("Paso 1: Preparando nuevo entorno (Green)")
-    time.sleep(2)  # Simular tiempo de preparación
+import timaeep(2)  # Simular tiempo de preparación
     
     # Paso 2: Desplegar aplicación en nuevo entorno
     print("Paso 2: Desplegando aplicación en nuevo entorno")
